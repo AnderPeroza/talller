@@ -1,27 +1,38 @@
-const nameUser = document.getElementById("nameRegister")
-const lastNameUser = document.getElementById("lastnameRegister")
-const emailUser = document.getElementById("emailRegister")
-const passwordUser = document.getElementById("passwordRegister")
+const emailLogin = document.getElementById("emailLogin")  
+const passwordLogin = document.getElementById("passwordLogin")
 
+const buttonLogin = document.getElementById("buttonLogin")
 
-const buttonRegister = document.getElementById("buttonRegister")
+buttonLogin.addEventListener("click", async () =>{
+    if(emailLogin.value !== "" && passwordLogin.value !== ""){
+        const userLogin = {
+            "email": emailLogin.value,
+            "password":passwordLogin.value
+        }
+        const response = await fetch('https://graco-task-list.herokuapp.com/login',{
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(userLogin)
 
-buttonRegister.addEventListener("click", ()=>{
-    console.log("holaaaaaa")
+        })
 
-    const newUser = {
-        "name": nameUser.value, 
-        "lastName": lastNameUser.value,
-        "email": emailUser.value,
-        "password": passwordUser.value 
+        const data = await response.json()
+       
+        if(response.status===200){
+            const jwt = data.token
+
+            localStorage.setItem('token',jwt)
+            
+            window.location.href = 'index-tarea.html'
+        }
+
+    }else{
+        Swal.fire(
+            'Campos Vacios',
+            'Debe llenar todos los campos requeridos!',
+            'error'
+        )
     }
-
-    console.log(newUser)
-    const info = fetch('https://graco-task-list.herokuapp.com/register', {
-    method: "POST",
-    body: JSON.stringify(newUser),
-    headers: {"Content-type": "application/json; charset=UTF-8"}})
-
-    
-
 })

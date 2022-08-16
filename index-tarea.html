@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de tareas</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"
+        defer></script>
+
+    
+    <script src="index-tarea.js" defer></script>
+    <link rel="stylesheet" href="style-tarea.css">
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Listado de tareas</a>
+        </div>
+    </nav>
+
+
+    <div class="container-lg pt-5 d-flex justify-content-around flex-column flex-sm-row">
+
+        <!-- formulario -->
+        <div class="card w-auto d-inline-block mb-5  shadow">
+
+            <!-- tarjeta izquierda -->
+            <div class="card-body">
+                <p class="card-title">Agregar tarea</p>
+                <hr>
+                <form id="task-form">
+                    <!-- campo para el nombre de la tarea -->
+                    <div class="mb-3">
+                        <label for="taskName" class="form-label">Nombre de la tarea</label>
+                        <input name="taskName" class="form-control" id="taskName" placeholder="do something...">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="taskPriority" class="form-label">Prioridad de la tarea</label>
+                        <select name="taskPriority" class="form-select" id="taskPriority"
+                            aria-label="Default select example">
+                            <option value="5">5</option>
+                            <option value="4">4</option>
+                            <option value="3">3</option>
+                            <option value="2">2</option>
+                            <option value="1">1</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="" >Fecha de la tarea</label>
+                        <br>
+                        <input type="date" class="form-control" name="taskDate" id="taskDate">
+                        
+                    </div>
+
+                    <button id="add-task-btn" type="submit" class="btn btn-primary w-100" style="margin-top: 0.6rem;">Agregar tarea</button>
+
+
+                </form>
+
+            </div>
+        </div>
+
+        <!-- listado -->
+        <div class="card w-auto d-inline-block mb-5  shadow">
+            <div class="card-body" id="card-body">
+                <p class="card-title">Listado de tareas</p>
+
+                <ol id="task-list"  class="list-group list-group-numbered w-100" style="max-width: 500px; ">
+                    <!-- <li class="list-group-item d-flex justify-content-between align-items-center"
+                        style="word-break: keep-all;">
+                        <div class="mx-2 text-start" style="flex: 1;">
+                            <div class="fw-bold">Pasear al perro</div>
+                        </div>
+                        <span class="badge bg-primary rounded-pill mx-1">2</span>
+
+                        <button type="button" class="btn btn-outline-danger btn-sm">
+                            <svg fill="#000000" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20px"
+                                height="20px">
+                                <path
+                                    d="M 10 2 L 9 3 L 4 3 L 4 5 L 5 5 L 5 20 C 5 20.522222 5.1913289 21.05461 5.5683594 21.431641 C 5.9453899 21.808671 6.4777778 22 7 22 L 17 22 C 17.522222 22 18.05461 21.808671 18.431641 21.431641 C 18.808671 21.05461 19 20.522222 19 20 L 19 5 L 20 5 L 20 3 L 15 3 L 14 2 L 10 2 z M 7 5 L 17 5 L 17 20 L 7 20 L 7 5 z M 9 7 L 9 18 L 11 18 L 11 7 L 9 7 z M 13 7 L 13 18 L 15 18 L 15 7 L 13 7 z" />
+                            </svg>
+
+                        </button>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center"
+                        style="word-break: keep-all;">
+                        <div class="mx-2 text-start" style="flex: 1;">
+                            <div class="fw-bold">Jugar lol</div>
+                        </div>
+                        <span class="badge bg-primary rounded-pill mx-1">5</span>
+
+                        <button type="button" class="btn btn-outline-danger btn-sm">
+                            <svg fill="#000000" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20px"
+                                height="20px">
+                                <path
+                                    d="M 10 2 L 9 3 L 4 3 L 4 5 L 5 5 L 5 20 C 5 20.522222 5.1913289 21.05461 5.5683594 21.431641 C 5.9453899 21.808671 6.4777778 22 7 22 L 17 22 C 17.522222 22 18.05461 21.808671 18.431641 21.431641 C 18.808671 21.05461 19 20.522222 19 20 L 19 5 L 20 5 L 20 3 L 15 3 L 14 2 L 10 2 z M 7 5 L 17 5 L 17 20 L 7 20 L 7 5 z M 9 7 L 9 18 L 11 18 L 11 7 L 9 7 z M 13 7 L 13 18 L 15 18 L 15 7 L 13 7 z" />
+                            </svg>
+
+                        </button>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center"
+                        style="word-break: keep-all;">
+                        <div class="mx-2 text-start" style="flex: 1;">
+                            <div class="fw-bold">Jugar minecraft</div>
+                        </div>
+                        <span class="badge bg-primary rounded-pill mx-1">2</span>
+
+                        <button type="button" class="btn btn-outline-danger btn-sm">
+                            <svg fill="#000000" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20px"
+                                height="20px">
+                                <path
+                                    d="M 10 2 L 9 3 L 4 3 L 4 5 L 5 5 L 5 20 C 5 20.522222 5.1913289 21.05461 5.5683594 21.431641 C 5.9453899 21.808671 6.4777778 22 7 22 L 17 22 C 17.522222 22 18.05461 21.808671 18.431641 21.431641 C 18.808671 21.05461 19 20.522222 19 20 L 19 5 L 20 5 L 20 3 L 15 3 L 14 2 L 10 2 z M 7 5 L 17 5 L 17 20 L 7 20 L 7 5 z M 9 7 L 9 18 L 11 18 L 11 7 L 9 7 z M 13 7 L 13 18 L 15 18 L 15 7 L 13 7 z" />
+                            </svg>
+
+                        </button>
+                    </li> -->
+                    
+                </ol>
+              
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+
+</body>
+
+</html>

@@ -8,7 +8,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
-    <script src="index.js"></script>
+    <script src="index.js" defer></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
     <title>Iniciar Sesion</title>
 </head>
 <body>
@@ -16,18 +17,18 @@
         <div class="formContent">
             <h2>Iniciar Sesion</h2>
             <form>
-                <input type="text" placeholder="Correo Electronico">
+                <input id="emailLogin" type="text" placeholder="Correo Electronico">
                 <br>
-                <input type="password" name="" id="" placeholder="Contraseña">
+                <input  type="password" name="" id="passwordLogin" placeholder="Contraseña">
                 <br>
                 
             </form>
-            <button class="buttonLogin" id="buttonLogin">Entrar</button>
+            <button class="buttonLogin" id="buttonLogin">Iniciar Sesion</button>
 
            
             <div class="formFooter">
                 
-                <!-- <a class="underlineHover" href="index-register.html">Necesito Registrame</a> -->
+               <a class="underlineHover" href="index-register.html">Necesito Registrame</a>
             </div>
             
         </div>
