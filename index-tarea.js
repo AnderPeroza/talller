@@ -10,12 +10,92 @@ if(btnElement){
 } */
 //agarrar el elemento form
 
-const deleteTask = (id) =>{
-    //console.log("holaaaaaaaaaaaaaaaaaaaaaa")
+const deleteTask = async (id) =>{
+    console.log("llamando", id);
+    console.log("holaaaaaaaaaaaaaaaaaaaaaa")
     const taskListElement = document.getElementById("task-list")
     const elementToDelete = document.getElementById(id)
-    taskListElement.removeChild(elementToDelete)
+    const token = localStorage.getItem('token')
+
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+    }).then(async (result) => {
+        if (result.isConfirmed) {
+        
+
+            const response = await fetch('https://graco-task-list.herokuapp.com/task/'+id, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+        
+            if(response.status === 200){
+                taskListElement.removeChild(elementToDelete)
+            }
+            Swal.fire(
+            'Deleted!',
+            'Your file has been deleted.',
+            'success'
+          )
+        }
+    })
+
+    
+    
+    
+    
+    
+
+    
 }
+const btnClearAll = document.getElementById("btnClearAll")
+btnClearAll.addEventListener("click", async ()=>{
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+    }).then(async(result) => {
+        if (result.isConfirmed) {
+            const token = localStorage.getItem('token')
+
+            const response = await fetch('https://graco-task-list.herokuapp.com/task/delete/all', {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            if(response.status !== 200){
+                const data = response.json()
+                Swal.fire(
+                    'Algo salio mal',
+                    `${data.error}`,
+                    'error'
+                    )
+                return
+
+            }
+            Swal.fire(
+                'Deleted!',
+                'Your file has been deleted.',
+                'success'
+            )
+            init()
+        }
+    })
+})
 const taskListElement = document.getElementById("task-list")
 
 const formElement= document.getElementById("task-form")
@@ -102,11 +182,12 @@ buttonAdd.addEventListener("click",async()=>{
             "date": taskDateElement.value ,
             "priority": selectElement.value
         }
-        
+        const token = localStorage.getItem('token')
         const response = await fetch('https://graco-task-list.herokuapp.com/task', {
             method: "POST",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify( newTask )
         })
@@ -136,8 +217,40 @@ buttonAdd.addEventListener("click",async()=>{
         )
     }
 })
+
+const btnSignOff = document.getElementById("btnSignOff")
+
+btnSignOff.addEventListener("click",()=>{
+
+
+
+    Swal.fire({
+        title: 'Seguro que quiere cerrar sesion?',
+        text: "Los datos no guardados se perderan",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Si, Cerrar Sesion!'
+    }).then(async(result) => {
+        if (result.isConfirmed) {
+            localStorage.removeItem("token")
+            window.location.href = "/"
+        }
+
+    })
+})
+
 const init = async () =>{
     const token = localStorage.getItem('token')
+
+    if(!token){
+        location.href = "/"
+        return
+    }
+
+    btnClearAll.style.display = "none"
+
 
     const reponse = await fetch('https://graco-task-list.herokuapp.com/task',{
         headers: {
@@ -146,30 +259,33 @@ const init = async () =>{
     })
 
     const data = await reponse.json()
+    console.log(data.data)
 
-    console.log(data)
-    let index = 0
-    if(taskListElement.children.length > 0){
-        const ultimoHijo= taskListElement.children[taskListElement.children.length - 1]
-        index += parseInt(ultimoHijo.id)
+    taskListElement.innerHTML = ""
+    for(let i=0; i<data.data.length; i++ ){
+        
+        taskListElement.innerHTML +=`
+        <li id="${data.data[i]._id}" class="list-group-item d-flex justify-content-between align-items-center"
+        style="word-break: keep-all;">
+            <div class="mx-2 text-start" style="flex: 1;">
+                <div class="fw-bold">${data.data[i].name}</div>
+                <div class="fw-bold">${data.data[i].date}</div>                        
+            </div>
+            <span class="badge bg-primary rounded-pill mx-1">${data.data[i].priority}</span>
+    
+            <button onclick="deleteTask('${data.data[i]._id}')" type="button" class="btn btn-outline-danger btn-sm">
+                <svg fill="#000000" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20px" height="20px">
+                    <path d="M 10 2 L 9 3 L 4 3 L 4 5 L 5 5 L 5 20 C 5 20.522222 5.1913289 21.05461 5.5683594 21.431641 C 5.9453899 21.808671 6.4777778 22 7 22 L 17 22 C 17.522222 22 18.05461 21.808671 18.431641 21.431641 C 18.808671 21.05461 19 20.522222 19 20 L 19 5 L 20 5 L 20 3 L 15 3 L 14 2 L 10 2 z M 7 5 L 17 5 L 17 20 L 7 20 L 7 5 z M 9 7 L 9 18 L 11 18 L 11 7 L 9 7 z M 13 7 L 13 18 L 15 18 L 15 7 L 13 7 z" />
+                </svg>
+            </button>
+        </li>
+        `  
     }
-   
-    taskListElement.innerHTML +=`
-    <li id="${data.data[index]._id}"  class="list-group-item d-flex justify-content-between align-items-center"
-    style="word-break: keep-all;">
-        <div class="mx-2 text-start" style="flex: 1;">
-            <div class="fw-bold">${data.data[index].name}</div>
-            <div class="fw-bold">${data.data[index].date}</div>                        
-        </div>
-        <span class="badge bg-primary rounded-pill mx-1">${data.data[0].priority}</span>
+    if(data.data.length !== 0 ){
+        btnClearAll.style.display = "block"
+    }
 
-        <button onclick="deleteTask()" type="button" class="btn btn-outline-danger btn-sm">
-            <svg fill="#000000" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20px" height="20px">
-                <path d="M 10 2 L 9 3 L 4 3 L 4 5 L 5 5 L 5 20 C 5 20.522222 5.1913289 21.05461 5.5683594 21.431641 C 5.9453899 21.808671 6.4777778 22 7 22 L 17 22 C 17.522222 22 18.05461 21.808671 18.431641 21.431641 C 18.808671 21.05461 19 20.522222 19 20 L 19 5 L 20 5 L 20 3 L 15 3 L 14 2 L 10 2 z M 7 5 L 17 5 L 17 20 L 7 20 L 7 5 z M 9 7 L 9 18 L 11 18 L 11 7 L 9 7 z M 13 7 L 13 18 L 15 18 L 15 7 L 13 7 z" />
-            </svg>
-        </button>
-    </li>
-    `
+    
     console
 }
 init()

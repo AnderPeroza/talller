@@ -36,3 +36,13 @@ buttonLogin.addEventListener("click", async () =>{
         )
     }
 })
+
+const init = ()=>{
+    emailLogin.value = ""
+    passwordLogin.value = ""
+    if(localStorage.getItem("token")){
+        window.location.href = "index-tarea.html"
+    }
+}
+
+init() 

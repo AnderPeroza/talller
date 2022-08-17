@@ -1,0 +1,11 @@
+.btnSignOff{
+    border: none;
+    background-color: transparent;
+    color: white;
+}
+
+body, html{
+    height: 100%;
+    min-height: 100%;
+    background-color: #56baed;
+}

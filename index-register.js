@@ -39,6 +39,14 @@ buttonRegister.addEventListener("click", async ()=>{
                     'success'
                 )
                 window.location.href = "/" 
+            }else if(response.status === 404){
+                Swal.fire({
+                    icon: 'error',
+                    title: 'usuario o contraseña es incorrecto',
+                    text: `${data.error}`,
+                    footer: ''
+                })
+            
             }else{
                 Swal.fire({
                     icon: 'error',
@@ -47,10 +55,6 @@ buttonRegister.addEventListener("click", async ()=>{
                     footer: ''
                 })
             }
-    
-        
-        
-        
         
         } catch (data) {
             Swal.fire({
@@ -72,3 +76,4 @@ buttonRegister.addEventListener("click", async ()=>{
     
 
 })
+
