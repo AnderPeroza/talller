@@ -262,11 +262,20 @@ const init = async () =>{
     console.log(data.data)
 
     taskListElement.innerHTML = ""
+    
     for(let i=0; i<data.data.length; i++ ){
+        if(data.data[i].priority < 3){
+            backgroundColor = "background-color: blue; color: white;"
+        }else if(data.data[i].priority > 2 && data.data[i].priority < 5 ){
+            backgroundColor = "background-color: yellow; "
+        }else{
+            backgroundColor = "background-color: red; color: white;"
+        }
         
         taskListElement.innerHTML +=`
+        
         <li id="${data.data[i]._id}" class="list-group-item d-flex justify-content-between align-items-center"
-        style="word-break: keep-all;">
+        style="word-break: keep-all; ${backgroundColor}">
             <div class="mx-2 text-start" style="flex: 1;">
                 <div class="fw-bold">${data.data[i].name}</div>
                 <div class="fw-bold">${data.data[i].date}</div>                        
@@ -279,8 +288,13 @@ const init = async () =>{
                 </svg>
             </button>
         </li>
-        `  
+        `
+        
     }
+    const cardTitle = document.getElementById("card-title")
+    let cont = taskListElement.children.length 
+    cardTitle.innerHTML = `Listado de tareas: ${cont}`  
+    
     if(data.data.length !== 0 ){
         btnClearAll.style.display = "block"
     }
