@@ -39,6 +39,7 @@ const deleteTask = async (id) =>{
         
             if(response.status === 200){
                 taskListElement.removeChild(elementToDelete)
+                init()
             }
             Swal.fire(
             'Deleted!',
