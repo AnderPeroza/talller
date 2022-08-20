@@ -39,7 +39,6 @@ const deleteTask = async (id) =>{
         
             if(response.status === 200){
                 taskListElement.removeChild(elementToDelete)
-                init()
             }
             Swal.fire(
             'Deleted!',
@@ -243,7 +242,11 @@ btnSignOff.addEventListener("click",()=>{
 })
 
 const init = async () =>{
-    const token = localStorage.getItem('token')
+    
+    
+    taskDateElement.value = ""
+    selectElement.value = ""
+    inputElement.value =""
 
     if(!token){
         location.href = "/"
