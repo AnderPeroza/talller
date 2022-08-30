@@ -243,7 +243,8 @@ btnSignOff.addEventListener("click",()=>{
 
 const init = async () =>{
     
-    
+    const token = localStorage.getItem('token')
+
     taskDateElement.value = ""
     selectElement.value = ""
     inputElement.value =""
